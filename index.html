@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="/blackjack/style.css" />
+    <title>Document</title>
+  </head>
+  <body class="bg-lucas-gay">
+    <div class="container mt-4">
+      <div class="mx-auto flex p-1 max-w-xl ">
+        <h1 class="mx-auto text-5xl text-white">
+          Black Jack Card Counter
+        </h1>
+      </div>
+
+      <div
+        class=" p-6 max-w-2xl mx-auto flex text-center bg-custom-white my-6 rounded-lg shadow-xl"
+      >
+        <div class="flex-1">
+          <button
+            class="w-10 py-2 px-2 bg-custom-yellow rounded-lg text-white mb-2 shadow text-md outline-none"
+            onclick="changeCount(1)"
+          >
+            +1
+          </button>
+
+          <p class="text-gray-500 text-sm">2-6, Low value</p>
+        </div>
+
+        <div class="flex-1">
+          <button
+            class="py-2 mb-2 w-10 px-2 bg-green-500 text-white rounded-lg shadow"
+            onclick="changeCount(0)"
+          >
+            0
+          </button>
+          <p class="text-gray-500 text-sm">7-9, No value</p>
+        </div>
+
+        <div class="flex-1">
+          <button
+            class="py-2 w-10 px-2 bg-custom-yellow rounded-lg text-white mb-2 shadow outline-none"
+            onclick="changeCount(-1)"
+          >
+            -1
+          </button>
+          <p class="text-gray-500 text-sm">10-Ace, High value</p>
+        </div>
+      </div>
+
+      <div
+        class="max-w-2xl mx-auto flex p-6 bg-custom-white  my-6 rounded-lg shadow-xl"
+      >
+        <div class="">
+          <p id="counter" class="text-xl font-bold ">Counter: 0</p>
+          <p id="totalCards" class="text-xl ">Total cards counted: 0</p>
+        </div>
+      </div>
+
+      <div
+        class="max-w-2xl mx-auto flex p-6 bg-custom-white  rounded-lg shadow-xl"
+      >
+        <div class="mr-3 py-1">
+          <p id="decks">Decks left in the game: 6</p>
+          <p id="tc" class="font-bold">TC: 0</p>
+          <p id="advantage">Advantage: -0.4%</p>
+          <p id="bet" class="font-bold">Bet: 25</p>
+        </div>
+      </div>
+      <div class="mx-auto flex max-w-2xl mt-2 ">
+        <p class="text-gray-500 text-sm">Made by Mr Kokain</p>
+      </div>
+    </div>
+
+    <script>
+      var counter = 0
+      var totalCards = 0
+      var cardsInGame = 312
+      var advantage = -0.4
+      var tc = 0
+      var bet = 25
+
+      var counterEl = document.getElementById('counter')
+      var displayTotalCardsEl = document.getElementById('totalCards')
+      var decksEl = document.getElementById('decks')
+      var tcEl = document.getElementById('tc')
+      var advantageEl = document.getElementById('advantage')
+      var betEl = document.getElementById('bet')
+
+      var divideinput = document.getElementById('divideInput').value
+      var divideRes = document.getElementById('res')
+
+      function changeCount(int) {
+        counter += int
+        totalCards += 1
+        cardsInGame--
+        displayCounter()
+        displayTotalCards()
+        updateTC()
+        calculateAdvantageAndBet()
+      }
+
+      function updateTC() {
+        var decksLeft = cardsInGame / 52
+        decksEl.innerHTML = 'Decks left in the game: ' + decksLeft.toFixed(2)
+        tc = counter / decksLeft
+        tcEl.innerHTML = 'TC: ' + tc.toFixed(2)
+      }
+
+      function displayCounter() {
+        counterEl.innerHTML = 'Counter: ' + counter
+      }
+
+      function displayTotalCards() {
+        displayTotalCardsEl.innerHTML = 'Total cards counted: ' + totalCards
+      }
+
+      function calculateAdvantageAndBet() {
+        if (tc <= -2) advantage = -1.8
+        else if (tc <= -1 && !(tc <= -2)) advantage = -1.2
+        else if (tc <= 0 && !(tc <= -1)) advantage = -0.4
+        else if (tc >= 1 && !(tc >= 2)) advantage = 0.4
+        else if (tc >= 2 && !(tc >= 3)) advantage = 1
+        else if (tc >= 3 && !(tc >= 4)) advantage = 1.6
+        else if (tc >= 4 && !(tc >= 5)) advantage = 2.2
+        else if (tc >= 5 && !(tc >= 6)) advantage = 2.7
+        else if (tc >= 6 && !(tc >= 7)) advantage = 3.3
+        else if (tc >= 7 && !(tc >= 8)) advantage = 3.9
+        else if (tc >= 8) advantage = 4.5
+        advantageEl.innerHTML = 'Advantage: ' + advantage.toFixed(2) + '%'
+
+        if (tc <= 0) bet = 25
+        else if (tc >= 1 && !(tc >= 2)) bet = 35
+        else if (tc >= 2 && !(tc >= 3)) bet = 100
+        else if (tc >= 3 && !(tc >= 4)) bet = 200
+        else if (tc >= 4 && !(tc >= 5)) bet = 300
+        else if (tc >= 5) bet = 400
+
+        betEl.innerHTML = 'Bet: ' + bet
+      }
+    </script>
+    <!-- <script src="/blackjack/rainbow.js"></script>-->
+  </body>
+</html>
